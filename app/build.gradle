@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        applicationId "com.yjf.note"
+        minSdkVersion 15
+        targetSdkVersion 18
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res/anim', 'src/main/res/style', 'src/main/res/styles', 'src/main/res/2', 'src/main/res/style/d.xml', 'src/main/res/style/a.xml', 'src/main/res/aaa']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
