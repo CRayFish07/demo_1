@@ -1,0 +1,7 @@
+/build
+/.idea
+app.iml
+proguard-rules.pro
+/.gradle
+demo_1.iml
+
