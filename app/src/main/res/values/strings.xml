@@ -10,5 +10,7 @@
     <string name="photo">拍照</string>
     <string name="picture">图片</string>
     <string name="off">取消</string>
+    <string name="start">启动界面,将会自动登录，登录失败则显示登录界面，成功则直接进入主页</string>
+    <string name="refresh">登录次数</string>
 
 </resources>

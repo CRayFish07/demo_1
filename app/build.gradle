@@ -19,7 +19,7 @@ android {
     }
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res/anim', 'src/main/res/style', 'src/main/res/styles', 'src/main/res/2', 'src/main/res/style/d.xml', 'src/main/res/style/a.xml', 'src/main/res/aaa']
+            res.srcDirs = ['src/main/res', 'src/main/res/anim']
         }
     }
 }

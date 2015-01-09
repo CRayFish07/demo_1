@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,15 +16,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yif.note.db.ImageDB;
+import com.yjf.note.db.ImageDB;
+import com.yjf.note.handler.IndexHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +37,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private ImageView imageView;
     private ImageDB imageDB;
+    private IndexHandler indexHandler;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        TextView tv = (TextView)findViewById(R.id.welcome_text);
+        tv.setText("welcome "+username);
         //初始化按钮事件
         initButtonEvent();
         //初始话图片列表
         initImageList();
+        indexHandler = new IndexHandler(this.getApplicationContext());
     }
 
     private void initButtonEvent(){
@@ -52,6 +63,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         add_button.setOnClickListener(this);
         before_button.setOnClickListener(this);
         after_button.setOnClickListener(this);
+
+        Button refresh_button = (Button)findViewById(R.id.refresh);
+        refresh_button.setOnClickListener(this);
     }
 
     private void initImageList(){
@@ -152,8 +166,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.before_picture:getNextImage(0);break;
             case R.id.after_picture:getNextImage(1);break;
+            case R.id.refresh:indexHandler.count(handler);break;
         }
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            switch(data.getInt("result")){
+                case 1:
+                    Toast.makeText(MainActivity.this.getApplicationContext(), "登录总次数:"+data.getInt("count"), Toast.LENGTH_SHORT).show();
+                    break;
+                case 0:
+                    Toast.makeText(MainActivity.this.getApplicationContext(), data.getString("message"), Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
+            }
+        }
+    };
+
     //flag 1表示下一张，0表示上一张
     private void getNextImage(int flag){
           if(flag == 1){

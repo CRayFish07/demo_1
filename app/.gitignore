@@ -1,1 +1,4 @@
 /build
+/.idea
+app.iml
+proguard-rules.pro
